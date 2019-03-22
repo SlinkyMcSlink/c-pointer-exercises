@@ -1,24 +1,74 @@
-//
-// Created by Ivo Georgiev on 2019-03-07.
-//
-
 #include <stdio.h>
+#include <stdlib.h>
+#include "malloc.h"
+static int outerArray[5];
 
-// forward declarations
-void run_global_array();
-void run_local_array();
-void run_monolithic_array();
-void run_array_of_pointers();
-void run_linked_list();
+
+
+void monoArray(){
+    static int monoArray[5];
+    *monoArray = malloc(10 * sizeof (monoArray));
+    *monoArray = malloc(sizeof(int *) * 10);
+    for (int i=0; i <= 10; ++i) {
+        int newValue = rand() % 100;
+        monoArray[i] = &newValue;
+    }
+    free(monoArray);
+
+}
+
+void pointerArray(){
+    static int pointerArray[5];
+    *pointerArray = malloc(10 * sizeof (pointerArray));
+    *pointerArray = malloc(sizeof(int *) * 10);
+    for (int i=0; i <= 10; ++i) {
+        int newValue = rand() % 100;
+        int *newPoint = &newValue;
+        pointerArray[i] = &newPoint;
+    }
+    free(pointerArray);
+
+}
+
+struct node {
+    int value;
+    long next;
+};
+void linkedList() {
+    struct node a;
+    struct node b;
+    struct node c;
+
+    a.value = 5;
+    a.next = &b;
+
+    b.value = 6;
+    b.next = &c;
+
+    c.value = 7;
+
+}
 
 int main() {
-    printf("C Pointer Exercises\n");
+    static int innerArray[5];
+    int n = 0;
+    int t = 0;
+    for (int i = 0; i < 5; i++) {
+        outerArray[i] = rand() % 100;
+        n++;
+        printf("item: %d\n", outerArray[i]);
+        printf("n: %d\n", n);
+    }
 
-    run_global_array();
-    run_local_array();
-    run_monolithic_array();
-    run_array_of_pointers();
-    run_linked_list();
+    for (int i = 0; i < 5; i++) {
+        innerArray[i] = rand() % 100;
+        t++;
+        printf("item: %d\n", innerArray[i]);
+        printf("n: %d\n", n);
+    }
 
+    monoArray();
+    pointerArray();
+    linkedList();
     return 0;
 }
